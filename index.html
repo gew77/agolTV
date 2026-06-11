@@ -4,53 +4,53 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>World Cup Live</title>
+<title>Live Football TV</title>
 
 <style>
 body {
   margin:0;
-  font-family:Arial, sans-serif;
-  background:#050507;
+  font-family:Arial;
+  background:#0b0b0f;
   color:white;
+}
+
+header {
+  padding:15px;
   text-align:center;
-  overflow-x:hidden;
+  font-size:20px;
+  background:#111;
+  border-bottom:1px solid #222;
 }
 
-.container {
-  max-width:900px;
-  margin:auto;
-  padding:20px;
+.match-list {
+  padding:15px;
 }
 
-.player {
-  position:relative;
+.match {
+  background:#15151c;
+  margin-bottom:15px;
+  padding:15px;
+  border-radius:10px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.live {
+  color:#00ff88;
+  font-weight:bold;
+}
+
+.btn {
+  background:#00ffcc;
+  color:black;
+  padding:8px 12px;
+  border-radius:6px;
   cursor:pointer;
-  border-radius:12px;
-  overflow:hidden;
+  font-weight:bold;
 }
 
-.player img {
-  width:100%;
-  filter:brightness(0.7);
-}
-
-.play {
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  font-size:70px;
-}
-
-.overlay {
-  position:absolute;
-  bottom:0;
-  width:100%;
-  background:rgba(0,0,0,0.6);
-  padding:10px;
-}
-
-/* FULLSCREEN TRANSITION */
+/* PLAYER OVERLAY */
 .transition {
   position:fixed;
   top:0;
@@ -58,14 +58,14 @@ body {
   width:100%;
   height:100%;
   background:black;
-  z-index:999;
   display:flex;
   flex-direction:column;
   justify-content:center;
   align-items:center;
   opacity:0;
   pointer-events:none;
-  transition:0.5s;
+  transition:0.4s;
+  z-index:999;
 }
 
 .transition.active {
@@ -81,10 +81,9 @@ body {
 }
 
 .bar {
-  width:0%;
   height:100%;
+  width:0%;
   background:#00ffcc;
-  transition:0.2s;
 }
 
 .text {
@@ -98,61 +97,84 @@ body {
 
 <body>
 
-<div class="container">
-  <h1>⚽ WORLD CUP 2026</h1>
+<header>⚽ LIVE FOOTBALL TV</header>
 
-  <div class="player" onclick="goStream()">
-    <img src="https://images.unsplash.com/photo-1518091043644-c1d4457512c6">
-    <div class="play">▶</div>
-    <div class="overlay">LIVE • HD • FREE</div>
+<div class="match-list">
+
+  <div class="match">
+    <div>
+      🇦🇷 Argentina vs 🇫🇷 France <br>
+      <span class="live">LIVE NOW</span>
+    </div>
+    <div class="btn" onclick="play()">WATCH</div>
   </div>
+
+  <div class="match">
+    <div>
+      🇧🇷 Brazil vs 🇩🇪 Germany <br>
+      Kickoff in <span id="countdown"></span>
+    </div>
+    <div class="btn" onclick="play()">WATCH</div>
+  </div>
+
 </div>
 
-<!-- TRANSITION SCREEN -->
+<!-- TRANSITION -->
 
 <div class="transition" id="transition">
-  <h2>Launching HD Player...</h2>
+  <h2>Connecting to Live Stream...</h2>
   <div class="loader">
     <div class="bar" id="bar"></div>
   </div>
-  <div class="text" id="text">Connecting to server...</div>
+  <div class="text" id="text">Initializing...</div>
 </div>
 
 <script>
-function goStream() {
-  const trans = document.getElementById("transition");
+// IMMERSIVE PLAYER
+function play() {
+  const t = document.getElementById("transition");
   const bar = document.getElementById("bar");
   const text = document.getElementById("text");
 
-  trans.classList.add("active");
+  t.classList.add("active");
 
-  let progress = 0;
-
-  const messages = [
-    "Connecting to broadcast server...",
+  let p = 0;
+  const msgs = [
+    "Connecting to broadcast...",
     "Syncing HD stream...",
-    "Optimizing connection...",
+    "Optimizing server...",
     "Almost ready..."
   ];
 
-  let msgIndex = 0;
+  let i = 0;
 
-  const interval = setInterval(() => {
-    progress += 8;
-    bar.style.width = progress + "%";
+  const load = setInterval(() => {
+    p += 10;
+    bar.style.width = p + "%";
 
-    if (progress % 25 === 0 && msgIndex < messages.length) {
-      text.innerText = messages[msgIndex++];
+    if (p % 30 === 0 && i < msgs.length) {
+      text.innerText = msgs[i++];
     }
 
-    if (progress >= 100) {
-      clearInterval(interval);
-
-      // REDIRECT HALUS
+    if (p >= 100) {
+      clearInterval(load);
       window.location.href = "https://tvri.go.id/saluran/tvri-sport-hd";
     }
   }, 200);
 }
+
+// COUNTDOWN
+const target = new Date().getTime() + 3600000;
+
+setInterval(() => {
+  const now = new Date().getTime();
+  const diff = target - now;
+
+  const min = Math.floor((diff % (1000*60*60))/(1000*60));
+  const sec = Math.floor((diff % (1000*60))/1000);
+
+  document.getElementById("countdown").innerText = min+"m "+sec+"s";
+}, 1000);
 </script>
 
 </body>
