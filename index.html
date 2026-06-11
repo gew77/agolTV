@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live World Cup 2026</title>
+
+<style>
+body {
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#050507;
+  color:white;
+  text-align:center;
+}
+
+.container {
+  max-width:900px;
+  margin:auto;
+  padding:20px;
+}
+
+h1 {
+  font-size:26px;
+  margin-bottom:5px;
+}
+
+.live {
+  color:#ff2e2e;
+  font-weight:bold;
+  margin-bottom:15px;
+}
+
+.player {
+  position:relative;
+  cursor:pointer;
+  border-radius:12px;
+  overflow:hidden;
+}
+
+.player img {
+  width:100%;
+  display:block;
+  filter:brightness(0.7);
+}
+
+.play {
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-size:70px;
+}
+
+.overlay {
+  position:absolute;
+  bottom:0;
+  width:100%;
+  background:rgba(0,0,0,0.6);
+  padding:10px;
+  font-size:14px;
+}
+
+.btn {
+  margin-top:20px;
+  padding:15px 30px;
+  background:#ff2e2e;
+  border:none;
+  border-radius:8px;
+  font-size:16px;
+  color:white;
+  cursor:pointer;
+}
+
+.warning {
+  margin-top:10px;
+  color:#ffaa00;
+  font-size:14px;
+}
+
+.loading {
+  display:none;
+  margin-top:20px;
+}
+
+.bar {
+  width:0%;
+  height:6px;
+  background:#00ffcc;
+  margin-top:10px;
+  transition:0.3s;
+}
+
+.ads {
+  margin-top:25px;
+  padding:20px;
+  background:#111;
+  border-radius:10px;
+  font-size:14px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>⚽ WORLD CUP 2026 LIVE</h1>
+<div class="live">🔴 LIVE STREAM</div>
+
+<div class="player" onclick="startStream()">
+  <img src="https://images.unsplash.com/photo-1518091043644-c1d4457512c6">
+  <div class="play">▶</div>
+  <div class="overlay">HD • No Buffer • Free Access</div>
+</div>
+
+<button class="btn" onclick="startStream()">WATCH NOW</button>
+
+<div class="warning">⚠ Server hampir penuh, klik sekarang</div>
+
+<div class="loading" id="loading">
+  <p>Connecting to live server...</p>
+  <div class="bar" id="bar"></div>
+</div>
+
+<div class="ads">
+  🔥 Tempat Ads lo (AdSense / dll)
+</div>
+
+</div>
+
+<script>
+function startStream() {
+
+  // tracking klik (console dulu, nanti bisa ganti GA)
+  console.log("User klik stream");
+
+  document.getElementById("loading").style.display = "block";
+
+  let width = 0;
+  let interval = setInterval(() => {
+    width += 10;
+    document.getElementById("bar").style.width = width + "%";
+
+    if (width >= 100) {
+      clearInterval(interval);
+      window.open("https://layar.tvri.go.id/live", "_blank");
+    }
+  }, 200);
+}
+</script>
+
+</body>
+</html>
